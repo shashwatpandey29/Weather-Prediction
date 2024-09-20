@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Monitoring Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .data-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather Monitoring Dashboard</h1>
+    <div class="data-box">
+        <h2>Real-time Sensor Data</h2>
+        <p><strong>Temperature:</strong> {{ temperature }} °C</p>
+        <p><strong>Humidity:</strong> {{ humidity }} %</p>
+        <p><strong>Rain:</strong> {{ rain }} %</p>
+        <p><strong>Altitude:</strong> {{ altitude }} m</p>
+    </div>
+    <div class="data-box">
+        <h2>Predicted Data</h2>
+        <p><strong>Predicted Pressure:</strong> {{ predicted_pressure }} hPa</p>
+    </div>
+</body>
+</html>
