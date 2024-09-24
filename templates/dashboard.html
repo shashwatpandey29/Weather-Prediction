@@ -4,33 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Monitoring Dashboard</title>
+    <!-- Bootstrap CSS for responsive design -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js library for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 40px;
+            background-color: #f5f5f5;
+            padding: 40px;
         }
         h1 {
-            color: #4CAF50;
+            color: #007BFF;
+            text-align: center;
+            margin-bottom: 30px;
         }
         .data-box {
-            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            margin: 10px 0;
+            margin-bottom: 20px;
+        }
+        .data-box h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        .data-box p {
+            font-size: 1.2rem;
+        }
+        .chart-container {
+            width: 100%;
+            height: 400px;
         }
     </style>
 </head>
 <body>
     <h1>Weather Monitoring Dashboard</h1>
-    <div class="data-box">
-        <h2>Real-time Sensor Data</h2>
-        <p><strong>Temperature:</strong> {{ temperature }} °C</p>
-        <p><strong>Humidity:</strong> {{ humidity }} %</p>
-        <p><strong>Rain:</strong> {{ rain }} %</p>
-        <p><strong>Altitude:</strong> {{ altitude }} m</p>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="data-box">
+                    <h2>Real-time Sensor Data</h2>
+                    <p><strong>Temperature:</strong> <span id="temperature">25</span> °C</p>
+                    <p><strong>Humidity:</strong> <span id="humidity">60</span> %</p>
+                    <p><strong>Rain:</strong> <span id="rain">0</span> %</p>
+                    <p><strong>Altitude:</strong> <span id="altitude">100</span> m</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="data-box">
+                    <h2>Predicted Data</h2>
+                    <p><strong>Predicted Pressure:</strong> <span id="predicted_pressure">1013</span> hPa</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="data-box">
+            <h2>Data Visualization</h2>
+            <div class="chart-container">
+                <canvas id="weatherChart"></canvas>
+            </div>
+        </div>
     </div>
-    <div class="data-box">
-        <h2>Predicted Data</h2>
-        <p><strong>Predicted Pressure:</strong> {{ predicted_pressure }} hPa</p>
-    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JavaScript to handle data and update the chart -->
+    <script>
+        // Dummy data for real-time updates
+        let temperature = 25;
+        let humidity = 60;
+        let rain = 0;
+        let altitude = 100;
+        let predicted_pressure = 1013;
+
+        // Function to update the values in the DOM
+        function updateWeatherData() {
+            document.getElementById("temperature").textContent = temperature;
+            document.getElementById("humidity").textContent = humidity;
+            document.getElementById("rain").textContent = rain;
+            document.getElementById("altitude").textContent = altitude;
+            document.getElementById("predicted_pressure").textContent = predicted_pressure;
+
+            // Update the chart data
+            weatherChart.data.datasets[0].data = [temperature, humidity, rain, altitude, predicted_pressure];
+            weatherChart.update();
+        }
+
+        // Simulate real-time updates (you can replace this with actual sensor data)
+        setInterval(() => {
+            temperature += Math.random() * 2 - 1;
+            humidity += Math.random() * 2 - 1;
+            rain += Math.random() * 2 - 1;
+            altitude += Math.random() * 2 - 1;
+            predicted_pressure += Math.random() * 2 - 1;
+            updateWeatherData();
+        }, 3000);
+
+        // Chart.js for data visualization
+        const ctx = document.getElementById('weatherChart').getContext('2d');
+        const weatherChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Temperature', 'Humidity', 'Rain', 'Altitude', 'Pressure'],
+                datasets: [{
+                    label: 'Real-time Weather Data',
+                    data: [temperature, humidity, rain, altitude, predicted_pressure],
+                    backgroundColor: ['#007BFF', '#28A745', '#FFC107', '#DC3545', '#17A2B8'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        enabled: true,
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
